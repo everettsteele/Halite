@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Halite — SALT AI Workspace</title>
+  <meta name="description" content="Private AI workspace for State and Local Tax consulting. Document-grounded analysis with sourced findings and conversational follow-up." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F3EF; --white: #fff; --accent: #2563EB;
+      --accent-dim: rgba(37,99,235,0.07); --accent-border: rgba(37,99,235,0.18);
+      --text-1: #131110; --text-2: #3d3a37; --text-3: #6b6864; --text-4: #9c9894;
+      --border: #e5e2dd; --border-light: #ece9e4;
+      --amber: #d97706; --amber-bg: rgba(251,191,36,0.08);
+      --green: #15803d; --green-bg: rgba(21,128,61,0.07); --green-border: rgba(21,128,61,0.18);
+      --red: #dc2626;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,243,239,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 52px; }
+    .nav-brand { display: flex; align-items: center; gap: 8px; }
+    .nav-mark { width: 22px; height: 22px; background: #2563eb; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: #fff; }
+    .nav-name { font-family: 'Instrument Serif', serif; font-size: 16px; font-weight: 400; color: var(--text-1); }
+    .nav-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-4); border: 1px solid var(--border); padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    #new-btn { display: none; font-size: 12px; color: var(--text-4); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 100px; }
+    .stage { display: none; } .stage.active { display: block; }
+    .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+    h1 { font-family: 'Instrument Serif', serif; font-size: clamp(28px, 4vw, 38px); font-weight: 400; line-height: 1.15; letter-spacing: -0.02em; color: var(--text-1); margin-bottom: 12px; }
+    h1 em { font-style: italic; }
+    .hero-sub { font-size: 15px; color: var(--text-3); line-height: 1.65; max-width: 540px; margin-bottom: 36px; }
+    .card { background: var(--white); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .card-body { padding: 28px 28px 24px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+    label { display: block; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 6px; }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text-1); background: var(--white); outline: none; transition: border-color 0.15s; }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    textarea { resize: vertical; line-height: 1.6; }
+    .card-footer { padding: 14px 28px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; background: #fafaf8; border-radius: 0 0 12px 12px; }
+    .footer-note { font-size: 11px; color: var(--text-4); font-family: 'DM Mono', monospace; }
+    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 11px 24px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+    .btn-primary:disabled { background: var(--border); color: var(--text-4); cursor: not-allowed; }
+    .btn-primary:not(:disabled):hover { background: #1d4ed8; }
+    .btn-ghost { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 8px 16px; font-size: 12px; color: var(--text-3); cursor: pointer; font-family: 'DM Sans', sans-serif; }
+    .btn-dark { background: var(--text-1); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    #loading-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; gap: 20px; }
+    .spinner { width: 44px; height: 44px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 15px; font-weight: 500; color: var(--text-1); margin-bottom: 4px; }
+    .loading-sub { font-size: 12px; color: var(--text-4); font-family: 'DM Mono', monospace; }
+    .report-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .report-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-4); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 4px; }
+    .report-title { font-size: 20px; font-weight: 600; color: var(--text-1); letter-spacing: -0.02em; }
+    #report-content { padding: 28px 32px; }
+    #report-content h2 { font-size: 14px; font-weight: 600; color: var(--text-1); margin-top: 28px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    #report-content h2:first-child { margin-top: 0; }
+    #report-content h3 { font-size: 11px; font-weight: 600; color: var(--accent); margin-top: 18px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.07em; font-family: 'DM Mono', monospace; }
+    #report-content p { font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 6px; }
+    #report-content ul { padding-left: 0; margin-bottom: 8px; list-style: none; }
+    #report-content li { font-size: 13px; color: var(--text-2); line-height: 1.6; padding: 3px 0 3px 20px; position: relative; }
+    #report-content li::before { content: "—"; position: absolute; left: 0; color: var(--text-4); }
+    .warning-block { background: var(--amber-bg); border-left: 2px solid var(--amber); border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #92400e; line-height: 1.55; margin: 6px 0; }
+    .data-notice { padding: 14px 16px; background: var(--green-bg); border-radius: 8px; border: 1px solid var(--green-border); font-size: 12px; color: var(--green); line-height: 1.55; margin-top: 16px; }
+    .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .chat-meta-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
+    .chat-meta-sub { font-size: 11px; color: var(--text-4); font-family: 'DM Mono', monospace; }
+    .chat-window { padding: 20px 24px; min-height: 360px; max-height: 480px; overflow-y: auto; }
+    .suggested-label { font-size: 13px; color: var(--text-4); margin-bottom: 12px; }
+    .suggested-q { display: block; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 13px; color: var(--text-2); cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 7px; }
+    .suggested-q:hover { background: #ede9e2; }
+    .msg-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
+    .msg-row.user { flex-direction: row-reverse; }
+    .avatar { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; font-family: 'DM Mono', monospace; }
+    .avatar.user-av { background: var(--text-1); } .avatar.ai-av { background: var(--accent); }
+    .bubble { max-width: 88%; padding: 11px 15px; font-size: 13px; line-height: 1.6; font-family: 'DM Sans', sans-serif; white-space: pre-wrap; }
+    .bubble.user { background: var(--text-1); color: #fff; border-radius: 12px 12px 4px 12px; }
+    .bubble.ai { background: var(--bg); color: var(--text-2); border-radius: 12px 12px 12px 4px; border: 1px solid var(--border); }
+    .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.4; animation: pulse 1.2s ease-in-out infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; } .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,80%,100%{opacity:0.4} 40%{opacity:1} }
+    .chat-input-bar { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 10px; background: #fafaf8; border-radius: 0 0 12px 12px; }
+    .chat-input-bar input { flex: 1; }
+    .btn-send { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; }
+    .btn-send:disabled { background: var(--border); color: var(--text-4); cursor: not-allowed; }
+    .error-msg { background: rgba(220,38,38,0.07); border: 1px solid rgba(220,38,38,0.2); border-radius: 6px; padding: 10px 14px; font-size: 13px; color: var(--red); margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-mark">H</div>
+    <span class="nav-name">Halite</span>
+    <span class="nav-tag">Private</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <button id="new-btn" onclick="resetToInput()">+ New Analysis</button>
+  </div>
+</nav>
+<div class="container">
+  <div id="input-stage" class="stage active">
+    <div style="margin-bottom:36px">
+      <p class="eyebrow">SALT AI Workspace</p>
+      <h1>Your documents.<br><em>Every jurisdiction.</em></h1>
+      <p class="hero-sub">Upload client documents, describe the problem, and get a structured SALT analysis with sourced findings. Then interrogate the output the same way you would a senior analyst.</p>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div id="error-box" class="error-msg" style="display:none"></div>
+        <div class="field-row">
+          <div>
+            <label>Firm / Matter Name</label>
+            <input id="firm-name" type="text" placeholder="Client or matter identifier" />
+          </div>
+          <div>
+            <label>Analysis Type</label>
+            <select id="analysis-type">
+              <option value="nexus">Nexus Exposure Analysis</option>
+              <option value="reverse-audit">Reverse Audit / Refund Recovery</option>
+              <option value="credits">Credits and Incentives Research</option>
+              <option value="sales-use">Sales and Use Tax Review</option>
+              <option value="property-tax">Property Tax Appeal Analysis</option>
+              <option value="income-franchise">Income / Franchise Tax Review</option>
+              <option value="general">General SALT Review</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:18px">
+          <label>Problem / Question</label>
+          <textarea id="problem" style="min-height:100px" placeholder="Describe the specific question or issue. Examples:&#10;• Which states have nexus arguments based on this company's activity profile?&#10;• Review these 3 years of state filings for refund positions in open years.&#10;• What credits might this manufacturer qualify for in Georgia and Tennessee?"></textarea>
+        </div>
+        <div>
+          <label>Documents <span style="font-weight:400;color:var(--text-4);text-transform:none;letter-spacing:0"> — paste text from filings, statutes, client descriptions, correspondence</span></label>
+          <textarea id="documents" style="min-height:240px" placeholder="Paste text from any combination of:&#10;• State tax filings (income, sales, property)&#10;• Client fact pattern or activity description&#10;• State statutes or regulatory text&#10;• Prior work product or memos&#10;• Correspondence with taxing authorities&#10;&#10;The more source material you provide, the higher the citation confidence."></textarea>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="footer-note">Session only. Documents not stored or retained.</span>
+        <button class="btn-primary" onclick="runAnalysis()">Run Analysis →</button>
+      </div>
+    </div>
+    <div class="data-notice">
+      <strong>Data handling:</strong> Documents uploaded to this workspace are analyzed in-session only. Not stored, logged, or used for model training. All requests encrypted in transit.
+    </div>
+  </div>
+  <div id="loading-stage" class="stage">
+    <div class="spinner"></div>
+    <div style="text-align:center">
+      <p class="loading-text" id="loading-text">Reading documents...</p>
+      <p class="loading-sub" id="loading-sub">Running SALT analysis</p>
+    </div>
+  </div>
+  <div id="report-stage" class="stage">
+    <div class="report-header">
+      <div><p class="report-eyebrow">SALT Analysis</p><h2 class="report-title" id="report-title">Analysis Report</h2></div>
+      <button class="btn-dark" onclick="showChat()"><span>💬</span> Ask Questions</button>
+    </div>
+    <div class="card"><div id="report-content"></div></div>
+    <div style="margin-top:14px;padding:12px 16px;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text-4);line-height:1.5;font-family:'DM Mono',monospace">
+      ✅ High confidence — statutory or document support &nbsp;|&nbsp; ⚠️ Review recommended — ambiguous or enforcement uncertainty &nbsp;|&nbsp; ❌ Insufficient data — additional documents needed
+    </div>
+  </div>
+  <div id="chat-stage" class="stage">
+    <div class="chat-header">
+      <button class="btn-ghost" onclick="showReport()">← Report</button>
+      <div><p class="chat-meta-title" id="chat-title">Ask about this analysis</p><p class="chat-meta-sub">Answers sourced from uploaded documents and the report</p></div>
+    </div>
+    <div class="card">
+      <div class="chat-window" id="chat-window">
+        <p class="suggested-label">Suggested questions:</p>
+        <button class="suggested-q" onclick="fillChat(this.textContent)">Which findings have the highest refund potential?</button>
+        <button class="suggested-q" onclick="fillChat(this.textContent)">What additional documents would increase confidence on the flagged items?</button>
+        <button class="suggested-q" onclick="fillChat(this.textContent)">Are there any jurisdictions where the statute of limitations is a concern?</button>
+        <button class="suggested-q" onclick="fillChat(this.textContent)">What is the exposure if we do not file amended returns?</button>
+        <button class="suggested-q" onclick="fillChat(this.textContent)">Which findings should we prioritize presenting to the client?</button>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" id="chat-input" placeholder="Ask anything about this analysis..." onkeydown="if(event.key==='Enter')sendChat()" />
+        <button class="btn-send" id="send-btn" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const API_BASE = "https://halite-production.up.railway.app";
+  let currentReport = "", currentDocs = "", currentProblem = "", chatMessages = [];
+  const loadingSteps = ["Reading documents...","Identifying jurisdictions...","Cross-referencing statutes...","Analyzing fact pattern...","Checking enforcement posture...","Compiling findings...","Flagging uncertainties...","Generating analysis..."];
+  function showStage(id) { document.querySelectorAll(".stage").forEach(s=>s.classList.remove("active")); document.getElementById(id).classList.add("active"); document.getElementById("new-btn").style.display=id==="input-stage"?"none":"block"; window.scrollTo(0,0); }
+  function resetToInput() { currentReport=""; currentDocs=""; currentProblem=""; chatMessages=[]; document.getElementById("chat-window").innerHTML='<p class="suggested-label">Suggested questions:</p><button class="suggested-q" onclick="fillChat(this.textContent)">Which findings have the highest refund potential?</button><button class="suggested-q" onclick="fillChat(this.textContent)">What additional documents would increase confidence?</button><button class="suggested-q" onclick="fillChat(this.textContent)">Are there statute of limitations concerns?</button>'; showStage("input-stage"); }
+  function showError(msg) { const b=document.getElementById("error-box"); b.textContent=msg; b.style.display="block"; }
+  function clearError() { document.getElementById("error-box").style.display="none"; }
+  async function runAnalysis() {
+    clearError();
+    const docs=document.getElementById("documents").value.trim();
+    const problem=document.getElementById("problem").value.trim();
+    if (!docs) { showError("Please paste your documents before running the analysis."); return; }
+    if (!problem) { showError("Please describe the problem or question you need analyzed."); return; }
+    currentDocs=docs; currentProblem=problem; showStage("loading-stage");
+    let step=0; document.getElementById("loading-text").textContent=loadingSteps[0]; document.getElementById("loading-sub").textContent=document.getElementById("firm-name").value||"Running SALT analysis";
+    const interval=setInterval(()=>{ if(++step<loadingSteps.length) document.getElementById("loading-text").textContent=loadingSteps[step]; },2200);
+    try {
+      const res=await fetch(`${API_BASE}/api/analyze`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({firmName:document.getElementById("firm-name").value,problemDescription:problem,documents:docs,analysisType:document.getElementById("analysis-type").value})});
+      clearInterval(interval); const data=await res.json();
+      if (!res.ok||data.error) { showStage("input-stage"); showError(data.error||"Analysis failed. Please try again."); return; }
+      currentReport=data.report; renderReport(data.report,document.getElementById("firm-name").value); showStage("report-stage");
+    } catch(err) { clearInterval(interval); showStage("input-stage"); showError("Could not reach the analysis service. Please check your connection and try again."); }
+  }
+  function renderReport(text,firmName) {
+    document.getElementById("report-title").textContent=firmName?(firmName+" — Analysis"):"SALT Analysis";
+    document.getElementById("chat-title").textContent=firmName?("Ask about "+firmName):"Ask about this analysis";
+    let html=""; text.split("\n").forEach(line=>{ if(line.startsWith("## ")) html+=`<h2>${line.slice(3)}</h2>`; else if(line.startsWith("### ")) html+=`<h3>${line.slice(4)}</h3>`; else if(line.startsWith("- ")||line.startsWith("* ")) html+=`<ul><li>${line.slice(2)}</li></ul>`; else if(line.includes("⚠️")||line.includes("❌")) html+=`<div class="warning-block">${line}</div>`; else if(line.trim()) html+=`<p>${line}</p>`; });
+    document.getElementById("report-content").innerHTML=`<div style="padding:28px 32px">${html}</div>`;
+  }
+  function showChat() { showStage("chat-stage"); }
+  function showReport() { showStage("report-stage"); }
+  function fillChat(text) { document.getElementById("chat-input").value=text; document.getElementById("chat-input").focus(); }
+  function appendMessage(role,content) { const win=document.getElementById("chat-window"); const row=document.createElement("div"); row.className=`msg-row ${role}`; row.innerHTML=`<div class="avatar ${role==="user"?"user-av":"ai-av"}">${role==="user"?"You":"AI"}</div><div class="bubble ${role}">${content.replace(/</g,"&lt;")}</div>`; win.appendChild(row); win.scrollTop=win.scrollHeight; }
+  function appendTyping() { const win=document.getElementById("chat-window"); const row=document.createElement("div"); row.className="msg-row"; row.id="typing-row"; row.innerHTML='<div class="avatar ai-av">AI</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>'; win.appendChild(row); win.scrollTop=win.scrollHeight; }
+  async function sendChat() {
+    const input=document.getElementById("chat-input"); const msg=input.value.trim(); if(!msg) return;
+    if(chatMessages.length===0) document.getElementById("chat-window").innerHTML="";
+    input.value=""; document.getElementById("send-btn").disabled=true;
+    chatMessages.push({role:"user",content:msg}); appendMessage("user",msg); appendTyping();
+    try { const res=await fetch(`${API_BASE}/api/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:chatMessages,report:currentReport,documents:currentDocs,problemDescription:currentProblem})}); const data=await res.json(); document.getElementById("typing-row")?.remove(); const reply=data.reply||"Could not generate a response."; chatMessages.push({role:"assistant",content:reply}); appendMessage("assistant",reply); }
+    catch { document.getElementById("typing-row")?.remove(); appendMessage("assistant","Connection error. Please try again."); }
+    document.getElementById("send-btn").disabled=false; input.focus();
+  }
+</script>
+</body>
+</html>
