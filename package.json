@@ -1,0 +1,12 @@
+{
+  "name": "halite",
+  "version": "1.0.0",
+  "description": "Halite monorepo root",
+  "scripts": {
+    "start": "node backend/index.js",
+    "install:backend": "npm install --prefix backend"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
