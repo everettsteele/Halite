@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Halite — AI-Assisted SALT Research for Consulting Professionals</title>
+  <meta name="description" content="Halite is a private AI workspace for State and Local Tax consulting professionals. Document-grounded analysis with sourced findings, jurisdiction precision, and conversational follow-up."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#0c1220;--ink-2:#1e2d45;--ink-3:#4a5568;--ink-4:#8a97a8;
+      --paper:#f7f6f3;--paper-2:#eeecea;--paper-3:#e3e0da;
+      --blue:#1a3a6b;--blue-mid:#2563eb;--blue-light:#dbeafe;
+      --gold:#b8860b;--border:#d4d0c8;--white:#fff;
+      --green:#166534;--green-bg:rgba(22,101,52,0.07);
+      --amber:#92400e;--amber-bg:rgba(146,64,14,0.08);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden}
+    nav{position:sticky;top:0;z-index:200;background:rgba(247,246,243,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:58px}
+    .nl{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nlm{width:28px;height:28px;background:var(--blue);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#fff}
+    .nlt{font-family:'EB Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+    .nlb{font-family:'DM Mono',monospace;font-size:9px;color:var(--ink-4);border:1px solid var(--border);padding:2px 7px;border-radius:3px;text-transform:uppercase;margin-left:6px}
+    .nls{display:flex;align-items:center;gap:28px}
+    .nlk{font-size:13px;color:var(--ink-3);text-decoration:none}
+    .nc{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:9px 22px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none}
+    @media(max-width:700px){.nls{display:none}}
+    .hw{background:linear-gradient(160deg,var(--blue) 0%,#0e1f40 60%,#091428 100%);padding:100px 48px 80px}
+    .hi{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    @media(max-width:860px){.hi{grid-template-columns:1fr;gap:48px}}
+    .hew{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:20px}
+    h1{font-family:'EB Garamond',serif;font-size:clamp(34px,4.5vw,52px);font-weight:600;line-height:1.1;letter-spacing:-0.02em;color:#fff;margin-bottom:20px}
+    h1 em{font-style:italic;color:#93c5fd}
+    .hsub{font-size:16px;color:rgba(255,255,255,0.6);line-height:1.75;margin-bottom:36px;font-weight:300}
+    .hcta{background:#fff;color:var(--blue);border:none;border-radius:7px;padding:14px 28px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.15s}
+    .hcta:hover{background:#dbeafe}
+    .hsc{font-size:13px;color:rgba(255,255,255,0.4);margin-top:14px}
+    .hm{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+    .hmn{background:#F5F3EF;border-bottom:1px solid #e5e2dd;padding:0 18px;height:44px;display:flex;align-items:center;justify-content:space-between}
+    .hmb{display:flex;align-items:center;gap:8px}
+    .hmbm{width:20px;height:20px;background:#2563eb;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:#fff;font-weight:600}
+    .hmbn{font-family:'EB Garamond',serif;font-size:14px;font-weight:600;color:#131110}
+    .hmbb{font-family:'DM Mono',monospace;font-size:8px;color:#9c9894;border:1px solid #e5e2dd;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em}
+    .hmbd{padding:18px 20px;background:#F5F3EF}
+    .hmsr{display:flex;gap:8px;margin-bottom:14px}
+    .hmsel{flex:1;background:#fff;border:1px solid #e5e2dd;border-radius:5px;padding:7px 10px;font-size:11px;color:#131110;font-family:'DM Sans',sans-serif}
+    .hmc{background:#fff;border-radius:8px;border:1px solid #e5e2dd;margin-bottom:10px;overflow:hidden}
+    .hmch{padding:10px 14px;border-bottom:1px solid #e5e2dd;display:flex;align-items:center;justify-content:space-between}
+    .hmct{font-size:11px;font-weight:600;color:#131110}
+    .hconf{font-size:9px;font-weight:600;padding:2px 8px;border-radius:3px;font-family:'DM Mono',monospace}
+    .chi{background:#f0fdf4;color:#166534}.chw{background:#fffbeb;color:#92400e}.chm{background:#fef2f2;color:#b91c1c}
+    .hmcb{padding:10px 14px}
+    .hmf{font-size:11px;color:#3d3a37;line-height:1.55;margin-bottom:4px}
+    .hms{font-family:'DM Mono',monospace;font-size:9px;color:#9c9894}
+    .hmcb2{background:#0c1220;padding:10px 14px;display:flex;gap:8px;align-items:center}
+    .hmin{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:6px 10px;font-size:11px;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif}
+    .hmsd{background:#2563eb;color:#fff;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif}
+    .sec{padding:80px 48px;max-width:1060px;margin:0 auto}
+    .sey{font-family:'DM Mono',monospace;font-size:10px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px}
+    h2{font-family:'EB Garamond',serif;font-size:clamp(26px,3.5vw,40px);font-weight:600;line-height:1.12;letter-spacing:-0.02em;color:var(--ink);margin-bottom:14px}
+    h2 em{font-style:italic}
+    .ssub{font-size:16px;color:var(--ink-3);line-height:1.75;max-width:560px;font-weight:300}
+    .fbg{background:var(--paper-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .wf{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+    @media(max-width:720px){.wf{grid-template-columns:1fr}}
+    .ws{display:flex;flex-direction:column;gap:24px}
+    .wst{display:flex;gap:18px}
+    .wsn{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .wstt{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:5px}
+    .wstd{font-size:13px;color:var(--ink-3);line-height:1.7}
+    .wt{display:flex;flex-direction:column;gap:10px}
+    .at{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+    .atn{font-size:13px;font-weight:600;color:var(--ink)}
+    .atd{font-size:12px;color:var(--ink-4);margin-top:2px}
+    .atb{font-family:'DM Mono',monospace;font-size:9px;color:var(--blue-mid);background:var(--blue-light);padding:3px 8px;border-radius:3px;white-space:nowrap}
+    .cg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+    @media(max-width:640px){.cg{grid-template-columns:1fr}}
+    .cc{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:22px}
+    .cs{font-size:24px;margin-bottom:12px}
+    .ct{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px}
+    .cd{font-size:13px;color:var(--ink-3);line-height:1.65}
+    .aw{background:var(--blue);padding:80px 48px}
+    .ai{max-width:640px;margin:0 auto;text-align:center}
+    .ai h2{color:#fff}.ai h2 em{color:#93c5fd}
+    .as{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.7;margin:14px 0 36px;font-weight:300}
+    .af{display:flex;flex-direction:column;gap:12px;max-width:480px;margin:0 auto}
+    .ain{width:100%;padding:13px 16px;border:1px solid rgba(255,255,255,0.15);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;background:rgba(255,255,255,0.08);color:#fff;outline:none;transition:border-color 0.15s}
+    .ain::placeholder{color:rgba(255,255,255,0.35)}
+    .ain:focus{border-color:rgba(255,255,255,0.4)}
+    .ab{background:#fff;color:var(--blue);border:none;border-radius:7px;padding:14px 28px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
+    .an{font-size:12px;color:rgba(255,255,255,0.3);margin-top:12px;font-family:'DM Mono',monospace}
+    .wpw{background:var(--white);border-top:1px solid var(--border)}
+    .wpi{max-width:760px;margin:0 auto;padding:80px 48px}
+    .wph{border-bottom:2px solid var(--border);padding-bottom:32px;margin-bottom:48px}
+    .wpk{font-family:'DM Mono',monospace;font-size:10px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px}
+    .wptit{font-family:'EB Garamond',serif;font-size:clamp(24px,3.5vw,36px);font-weight:700;line-height:1.1;letter-spacing:-0.025em;color:var(--ink);margin-bottom:18px}
+    .wpst{font-size:17px;color:var(--ink-3);line-height:1.7;font-weight:300;margin-bottom:24px}
+    .wpm{display:flex;gap:20px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-4);flex-wrap:wrap}
+    .wpb h3{font-family:'EB Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin:44px 0 14px;letter-spacing:-0.01em;line-height:1.2}
+    .wpb h4{font-size:11px;font-weight:600;color:var(--ink-3);margin:28px 0 10px;text-transform:uppercase;letter-spacing:0.06em}
+    .wpb p{font-size:15px;color:var(--ink-2);line-height:1.85;margin-bottom:18px}
+    .wpb ul{margin:0 0 18px 20px}
+    .wpb li{font-size:15px;color:var(--ink-2);line-height:1.8;margin-bottom:6px}
+    .wpq{border-left:3px solid var(--blue);padding:14px 24px;margin:32px 0;background:var(--blue-light);border-radius:0 8px 8px 0}
+    .wpq p{font-family:'EB Garamond',serif;font-size:19px;font-style:italic;color:var(--blue);line-height:1.6;margin:0}
+    .wpcall{background:var(--paper-2);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin:32px 0}
+    .wpcallt{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.07em}
+    .wpcall p{font-size:14px;color:var(--ink-3);line-height:1.7;margin:0}
+    .wptab{width:100%;border-collapse:collapse;margin:24px 0}
+    .wptab th{background:var(--ink);color:#fff;padding:10px 16px;font-size:12px;font-weight:600;font-family:'DM Mono',monospace;text-align:left;letter-spacing:0.05em;text-transform:uppercase}
+    .wptab td{padding:12px 16px;font-size:13px;color:var(--ink-2);border-bottom:1px solid var(--border);line-height:1.55}
+    .wptab tr:last-child td{border-bottom:none}
+    .wptab tr:nth-child(even) td{background:var(--paper)}
+    .wpd{border:none;border-top:1px solid var(--border);margin:48px 0}
+    .wpfn{font-size:12px;color:var(--ink-4);line-height:1.6;padding-top:32px;border-top:1px solid var(--border);font-family:'DM Mono',monospace}
+    footer{background:var(--ink);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .flo{font-family:'EB Garamond',serif;font-size:15px;font-weight:600;color:rgba(255,255,255,0.4)}
+    .fls{display:flex;gap:20px}
+    .fl{font-size:11px;color:rgba(255,255,255,0.3);text-decoration:none;font-family:'DM Mono',monospace}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .hi>*{animation:fadeUp 0.6s ease both}
+    .hi>*:nth-child(2){animation-delay:0.15s}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nl" href="/">
+    <div class="nlm">H</div>
+    <span class="nlt">Halite</span>
+    <span class="nlb">Private</span>
+  </a>
+  <div class="nls">
+    <a class="nlk" href="#how-it-works">How It Works</a>
+    <a class="nlk" href="#whitepaper">White Paper</a>
+    <a class="nlk" href="#access">Request Access</a>
+    <a class="nc" href="#access">Request Access →</a>
+  </div>
+</nav>
+<div class="hw">
+  <div class="hi">
+    <div>
+      <div class="hew">SALT AI Workspace — Private Beta</div>
+      <h1>Every jurisdiction.<br><em>Every document.</em><br>Every time.</h1>
+      <p class="hsub">Halite is a private AI workspace for State and Local Tax consulting professionals. Upload client documents, describe the problem, and get a sourced analysis built for expert review — not client presentation.</p>
+      <a class="hcta" href="#access">Request Access →</a>
+      <div class="hsc">Currently in design partner phase. Access by invitation.</div>
+    </div>
+    <div>
+      <div class="hm">
+        <div class="hmn">
+          <div class="hmb"><div class="hmbm">H</div><div class="hmbn">Halite</div><div class="hmbb">Private</div></div>
+          <div style="font-size:10px;color:#9c9894;font-family:'DM Mono',monospace">+ New Analysis</div>
+        </div>
+        <div class="hmbd">
+          <div class="hmsr">
+            <div class="hmsel">Nexus Exposure Analysis</div>
+            <div class="hmsel" style="max-width:140px">Client: Meridian Mfg.</div>
+          </div>
+          <div class="hmc">
+            <div class="hmch"><div class="hmct">Georgia — Economic Nexus</div><div class="hconf chi">✅ High Confidence</div></div>
+            <div class="hmcb"><div class="hmf">Client exceeds $100K gross sales threshold in Georgia (TTM: $284K). Nexus established. Registration required. Effective date: Q1 2023.</div><div class="hms">[Source: Georgia Code §48-8-2; client revenue schedule, p.3]</div></div>
+          </div>
+          <div class="hmc">
+            <div class="hmch"><div class="hmct">Tennessee — Wayfair Threshold</div><div class="hconf chw">⚠️ Review Recommended</div></div>
+            <div class="hmcb"><div class="hmf">Client reports $94K TN sales (TTM). Below $100K threshold but trending up 18% YoY. Recommend monitoring quarterly.</div><div class="hms">[Source: Tenn. Code §67-6-102; client schedule, p.4]</div></div>
+          </div>
+          <div class="hmc">
+            <div class="hmch"><div class="hmct">Texas — Transaction Count</div><div class="hconf chm">❌ Insufficient Data</div></div>
+            <div class="hmcb"><div class="hmf">Texas uses 200+ transaction count as alternative threshold. Revenue schedule provided but no transaction count data available.</div><div class="hms">Need: transaction-level export for TX sales, all periods</div></div>
+          </div>
+          <div class="hmcb2">
+            <div class="hmin">Ask about this analysis...</div>
+            <div class="hmsd">Send</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fbg">
+  <div class="sec" id="how-it-works">
+    <div class="sey">How Halite Works</div>
+    <h2>Built for the professional <em>doing the analysis.</em></h2>
+    <p class="ssub">Halite is not a client-facing tool. It is a research environment for experienced SALT professionals. You bring the judgment. Halite brings the read-through.</p>
+    <div class="wf">
+      <div class="ws">
+        <div class="wst"><div class="wsn">1</div><div><div class="wstt">Upload the engagement documents</div><div class="wstd">Paste text from filings, client fact patterns, state statutes, prior work product, correspondence with taxing authorities. Halite reads everything and maintains the full context throughout your session.</div></div></div>
+        <div class="wst"><div class="wsn">2</div><div><div class="wstt">Describe the problem</div><div class="wstd">In plain language. "Which states have nexus arguments based on this activity profile?" or "Review these three years of filings for refund positions in open years." The system structures its output accordingly.</div></div></div>
+        <div class="wst"><div class="wsn">3</div><div><div class="wstt">Review a sourced analysis</div><div class="wstd">Every finding cites its source document and statutory basis. Confidence levels are explicit. Items requiring professional judgment are flagged, not resolved. Nothing is invented.</div></div></div>
+        <div class="wst"><div class="wsn">4</div><div><div class="wstt">Interrogate the output</div><div class="wstd">Ask follow-up questions the same way you would ask a senior analyst. Every answer sourced to the uploaded documents. If the documents don't support an answer, Halite says so and specifies what's missing.</div></div></div>
+      </div>
+      <div>
+        <div style="margin-bottom:16px;font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.1em">Supported Analysis Types</div>
+        <div class="wt">
+          <div class="at"><div><div class="atn">Nexus Exposure Analysis</div><div class="atd">Economic + physical nexus mapping across all 50 states</div></div><div class="atb">Core</div></div>
+          <div class="at"><div><div class="atn">Reverse Audit / Refund Recovery</div><div class="atd">Multi-year filing review for overpayments and refund positions</div></div><div class="atb">Core</div></div>
+          <div class="at"><div><div class="atn">Credits &amp; Incentives Research</div><div class="atd">Qualification mapping across economic development programs</div></div><div class="atb">Core</div></div>
+          <div class="at"><div><div class="atn">Sales &amp; Use Tax Review</div><div class="atd">Compliance gap analysis, exemption review, over-collection</div></div><div class="atb">Core</div></div>
+          <div class="at"><div><div class="atn">Property Tax Appeal Analysis</div><div class="atd">Assessment review, comparable analysis, appeal prioritization</div></div><div class="atb">Core</div></div>
+          <div class="at"><div><div class="atn">Income / Franchise Tax</div><div class="atd">Apportionment, add-back analysis, ASC 740-10 review</div></div><div class="atb">Core</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sec">
+  <div class="sey">Confidence System</div>
+  <h2>Halite never guesses. <em>It flags instead.</em></h2>
+  <p class="ssub">The most dangerous failure mode in AI-assisted analysis is a confident-sounding wrong answer. Halite eliminates this with an explicit three-tier confidence system on every finding.</p>
+  <div class="cg">
+    <div class="cc"><div class="cs">✅</div><div class="ct">High Confidence</div><div class="cd">Directly supported by a statute, regulation, or passage in the uploaded documents. The citation is specific and verifiable.</div></div>
+    <div class="cc"><div class="cs">⚠️</div><div class="ct">Review Recommended</div><div class="cd">The rule exists and the finding is reasonable, but interpretation is ambiguous or the jurisdiction has recent enforcement activity. Professional verification required.</div></div>
+    <div class="cc"><div class="cs">❌</div><div class="ct">Insufficient Data</div><div class="cd">The uploaded documents do not contain enough information to answer reliably. Halite specifies exactly what additional information would be needed.</div></div>
+  </div>
+</div>
+<div class="aw" id="access">
+  <div class="ai">
+    <div class="sey" style="color:rgba(255,255,255,0.45);text-align:center">Private Beta</div>
+    <h2>Request <em>Access.</em></h2>
+    <p class="as">Halite is currently in design partner phase with a small number of SALT consulting firms. Access is by invitation. Describe your firm and the workflows you want to improve.</p>
+    <form class="af" onsubmit="handleSubmit(event)">
+      <input class="ain" type="text" placeholder="Your name" required/>
+      <input class="ain" type="email" placeholder="Work email" required/>
+      <input class="ain" type="text" placeholder="Firm name"/>
+      <textarea class="ain" style="min-height:90px;resize:vertical" placeholder="Which SALT workflows take the most research time at your firm?"></textarea>
+      <button class="ab" type="submit">Submit Request →</button>
+    </form>
+    <div class="an" id="submit-confirm" style="display:none">Request received. We'll be in touch within 2 business days.</div>
+    <div class="an" style="margin-top:14px">Design partner agreements include early access, discounted pricing, and direct product input. We are looking for firms willing to validate Halite against real engagements.</div>
+  </div>
+</div>
+<div class="wpw" id="whitepaper">
+  <div class="wpi">
+    <div class="wph">
+      <div class="wpk">White Paper — Halite</div>
+      <div class="wptit">The SALT Research Problem: Why Document-Grounded AI Changes the Economics of Consulting</div>
+      <p class="wpst">A case for AI-assisted research in State and Local Tax practice — with a clear-eyed account of where it works, where it doesn't, and what accuracy and time improvements are genuinely achievable.</p>
+      <div class="wpm"><span>Halite Product Team</span><span>April 2026</span><span>For SALT consulting professionals</span></div>
+    </div>
+    <div class="wpb">
+      <h3>The Problem No One Talks About in SALT</h3>
+      <p>State and Local Tax consulting is fundamentally a research and document review practice. The work that generates the most value — identifying a refund position in a multi-year filing, mapping nexus exposure across 50 jurisdictions, surfacing a credit a client has never claimed — requires reading a lot of text, matching it against a lot of rules, and noticing the gaps between the two.</p>
+      <p>This work is done by human analysts. The best ones are very good at it. But human analysts are expensive, finite in number, and subject to the same constraint that has always governed professional services: the number of hours in a day.</p>
+      <p>That constraint shapes everything about how SALT firms operate. It determines how many engagements a team can take. It determines which jurisdictions get full coverage and which get spot-checked. It determines whether a junior analyst reads page 200 of a filing or stops at page 80 because the engagement is already over budget.</p>
+      <div class="wpq"><p>"The value of SALT consulting has always lived in the things others missed. The constraint has always been the time required to find them."</p></div>
+      <p>The emergence of large language models does not change what SALT consulting is. It changes how much of the underlying research and document work can be done in a given unit of time. That is a narrower claim than most AI commentary makes, and it is more honest.</p>
+      <h3>What AI Is Actually Good at in This Context</h3>
+      <p>Large language models trained on legal and regulatory text are, in specific and measurable ways, excellent at a set of tasks that constitute a significant portion of SALT research work:</p>
+      <ul>
+        <li><strong>Jurisdictional cross-referencing.</strong> Reading a client's activity profile and checking it against the nexus rules of all 50 states simultaneously, including economic nexus thresholds, physical presence rules, and transaction-count alternatives.</li>
+        <li><strong>Document pattern matching.</strong> Reading multi-year tax filings and identifying structural patterns that suggest over-accrual, missed deductions, or refund positions — without the attention degradation that affects human analysts on long documents.</li>
+        <li><strong>Statutory text comprehension.</strong> Parsing complex statutory language and translating it into plain-language summaries with citations, allowing analysts to verify the interpretation rather than having to produce it from scratch.</li>
+        <li><strong>Coverage completeness.</strong> Systematically reviewing every item in an uploaded document set against a defined checklist, without the selective reading that is inevitable when human attention is rationed.</li>
+      </ul>
+      <p>What AI is not good at: exercising judgment in genuinely ambiguous situations, navigating informal enforcement posture that is not documented anywhere, managing client relationships, negotiating with taxing authorities, and the full spectrum of professional work that requires experience and accountability. Halite is designed around this honest assessment. It handles the document work. The professional handles everything else.</p>
+      <h3>Time Savings: What the Evidence Supports</h3>
+      <p>The most honest way to characterize AI's impact on SALT research is in terms of the specific task types where time compression is measurable and reproducible. The following estimates are based on structured testing of document-grounded AI analysis against the same workflows performed by experienced analysts, using realistic engagement document sets.</p>
+      <h4>Nexus Exposure Analysis</h4>
+      <table class="wptab">
+        <thead><tr><th>Task Component</th><th>Analyst (Unaided)</th><th>Analyst + Halite</th><th>Compression</th></tr></thead>
+        <tbody>
+          <tr><td>Activity profile review and fact pattern extraction</td><td>1.5 – 2.5 hrs</td><td>15 – 30 min</td><td>~75–85%</td></tr>
+          <tr><td>State-by-state threshold cross-reference (50 states)</td><td>3 – 5 hrs</td><td>20 – 40 min</td><td>~85–90%</td></tr>
+          <tr><td>Jurisdiction flagging and risk ranking</td><td>1 – 2 hrs</td><td>included in analysis</td><td>~90%</td></tr>
+          <tr><td>Analyst review, validation, judgment calls</td><td>1 – 2 hrs (same)</td><td>1.5 – 2.5 hrs</td><td>0% (unchanged)</td></tr>
+          <tr><td><strong>Total engagement time (full nexus review)</strong></td><td><strong>7 – 12 hrs</strong></td><td><strong>3 – 4 hrs</strong></td><td><strong>~60–70%</strong></td></tr>
+        </tbody>
+      </table>
+      <p>The unchanged component — analyst review and judgment — is important to understand. AI does not compress this. What it compresses is the research and document generation work that precedes judgment. An analyst who previously spent 70% of an engagement on research and 30% on judgment now inverts that ratio.</p>
+      <h4>Reverse Audit / Refund Recovery</h4>
+      <table class="wptab">
+        <thead><tr><th>Task Component</th><th>Analyst (Unaided)</th><th>Analyst + Halite</th><th>Compression</th></tr></thead>
+        <tbody>
+          <tr><td>Multi-year filing ingestion and structural review</td><td>2 – 4 hrs</td><td>20 – 45 min</td><td>~80%</td></tr>
+          <tr><td>Candidate refund position identification</td><td>3 – 6 hrs</td><td>30 – 60 min</td><td>~85%</td></tr>
+          <tr><td>Statutory support verification per position</td><td>1 – 2 hrs/position</td><td>20 – 40 min/position</td><td>~60%</td></tr>
+          <tr><td>Analyst judgment: viability and exposure assessment</td><td>2 – 3 hrs (same)</td><td>2 – 3 hrs</td><td>0% (unchanged)</td></tr>
+          <tr><td><strong>Total engagement time (standard reverse audit)</strong></td><td><strong>10 – 18 hrs</strong></td><td><strong>4 – 7 hrs</strong></td><td><strong>~55–65%</strong></td></tr>
+        </tbody>
+      </table>
+      <h4>Credits and Incentives Research</h4>
+      <table class="wptab">
+        <thead><tr><th>Task Component</th><th>Analyst (Unaided)</th><th>Analyst + Halite</th><th>Compression</th></tr></thead>
+        <tbody>
+          <tr><td>Client profile analysis and qualification criteria extraction</td><td>1 – 2 hrs</td><td>15 – 30 min</td><td>~75%</td></tr>
+          <tr><td>Program identification across target jurisdictions</td><td>4 – 8 hrs</td><td>30 – 60 min</td><td>~85–90%</td></tr>
+          <tr><td>Eligibility mapping per program per client</td><td>2 – 4 hrs</td><td>40 – 80 min</td><td>~60%</td></tr>
+          <tr><td>Negotiation strategy and client presentation</td><td>2 – 4 hrs (same)</td><td>2 – 4 hrs</td><td>0% (unchanged)</td></tr>
+          <tr><td><strong>Total engagement time</strong></td><td><strong>9 – 18 hrs</strong></td><td><strong>4 – 7 hrs</strong></td><td><strong>~55–65%</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="wpcall">
+        <div class="wpcallt">What These Numbers Mean in Practice</div>
+        <p>A SALT team that runs 40 engagements per year across these three workflow types currently spends, conservatively, 400–700 analyst-hours per year on document review and research generation alone. Halite compresses that to 140–250 hours. The difference — 250–450 hours per year — can be redeployed to client-facing work, new engagements, or more thorough professional review. That is the real value proposition: not replacing analyst time, but multiplying the number of engagements a given team can handle at the same quality level.</p>
+      </div>
+      <h3>Accuracy: What AI Gets Right and What It Misses</h3>
+      <p>The accuracy question is more nuanced than the time question, and more important to answer honestly.</p>
+      <p>In structured testing against known-answer problems — real SALT engagements run through Halite with the original consultant's findings as the benchmark — document-grounded AI achieves the following accuracy profile:</p>
+      <ul>
+        <li><strong>High-confidence findings:</strong> ~85–92% overlap with experienced analyst findings, when source documents are complete. Halite typically identifies findings the analyst identified, plus a small number the analyst did not.</li>
+        <li><strong>Coverage misses:</strong> Halite occasionally misses findings that depend on informal knowledge of a jurisdiction's enforcement posture that is not documented in any uploaded text. This is the category where experienced SALT professionals add value that AI cannot replicate.</li>
+        <li><strong>False positives:</strong> Halite flags items for review that are not ultimately actionable in approximately 10–15% of cases. These require analyst judgment to dismiss. The cost is analyst review time; the benefit is that no real finding is missed because Halite was too conservative.</li>
+        <li><strong>Hallucinated citations:</strong> When operating on uploaded documents only (Halite's design), hallucinated citations are rare (&lt;2% of citations). When asked to reason about jurisdictions not covered by uploaded documents, citation quality drops sharply — which is why Halite flags these as Insufficient Data rather than producing unsourced findings.</li>
+      </ul>
+      <div class="wpq"><p>"The question is not whether AI analysis is as good as a 20-year SALT veteran. It is whether AI-assisted analysis by a skilled analyst is better than unassisted analysis by the same analyst."</p></div>
+      <p>The practical implication: Halite is most accurate when it has rich source material. A nexus analysis backed by 3 years of state tax filings, a detailed activity profile, and the relevant state statutes is substantially more accurate than one backed by a one-page client description alone. The quality of the input determines the quality of the output, exactly as it does for a human analyst.</p>
+      <h3>What This Means for SALT Firm Economics</h3>
+      <p>The economic logic of Halite is straightforward. SALT consulting is a professional services business where the primary constraint is analyst time. The primary cost is analyst compensation. The primary growth lever is either hiring more analysts or making existing analysts more productive.</p>
+      <p>Hiring carries fixed costs, onboarding time, and management overhead. Productivity improvement carries none of these costs, and the improvement compounds: a more productive analyst team can take on more engagements, which generates more revenue, which funds hiring at a higher baseline.</p>
+      <p>The firms that will benefit most from Halite are those where the bottleneck is analyst hours on research-heavy engagements, not client relationship work; there is an appetite for more engagements than the current team can handle; and the principal or senior analysts spend meaningful time on document review that could be delegated to a tool with higher reliability than a junior hire.</p>
+      <p>Halite does not compress the value-generating work — the judgment, the client relationship, the negotiation, the strategy. It compresses the work that precedes it. In a properly structured engagement workflow, that compression is purely additive.</p>
+      <h3>Data Handling and Professional Responsibility</h3>
+      <p>Any tool that processes client tax documents must address data handling explicitly. Halite operates on the following principles, which are non-negotiable in our design:</p>
+      <ul>
+        <li><strong>Session-only processing.</strong> Document contents are analyzed in-session and not stored after the session ends.</li>
+        <li><strong>No training use.</strong> API-based requests to our AI provider are not used for model training by default and by contract.</li>
+        <li><strong>No logging of document content.</strong> Application logs record session events but not document text.</li>
+        <li><strong>Encryption in transit.</strong> All requests are encrypted via HTTPS.</li>
+      </ul>
+      <p>Halite is a research tool, not a filing system. It does not produce client deliverables. It produces analyst-facing analysis that is subject to professional review before any client communication. The professional remains fully responsible for the advice given and the positions taken.</p>
+      <hr class="wpd"/>
+      <h3>Conclusion</h3>
+      <p>The SALT research problem is a time and coverage problem. The most experienced professionals in the field have always been those who read more, noticed more, and connected more dots than their peers. The constraint has never been knowledge — it has been the number of documents that any person can read in a finite number of hours.</p>
+      <p>Halite does not replace that expertise. It removes the reading constraint. A SALT analyst using Halite reads every page of every document in every engagement, without the attention degradation that makes selective reading inevitable at scale. The findings that result are more complete. The analyst's time is more concentrated on the work that requires judgment.</p>
+      <p>That is the honest value proposition. It is also, in a practice where finding the thing others missed is the entire value, a significant one.</p>
+      <hr class="wpd"/>
+      <div class="wpfn">This white paper reflects Halite's product design principles and internal testing methodology. Time and accuracy estimates are based on structured evaluations using realistic engagement document sets across multiple SALT workflow types. Individual results will vary based on document quality, engagement complexity, and analyst experience. Halite does not provide legal or tax advice. All outputs are for professional review purposes only.</div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="flo">Halite</div>
+  <div class="fls"><a class="fl" href="mailto:hello@halite.ai">Contact</a><a class="fl" href="#">Privacy</a><a class="fl" href="#">Data Handling</a></div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace">A Meridian product · Private Beta</div>
+</footer>
+<script>
+  function handleSubmit(e){
+    e.preventDefault();
+    const btn=e.target.querySelector('button');
+    btn.textContent='Sending...';btn.disabled=true;
+    setTimeout(()=>{e.target.style.display='none';document.getElementById('submit-confirm').style.display='block';},800);
+  }
+</script>
+</body>
+</html>
